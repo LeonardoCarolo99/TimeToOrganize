@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TimeToShop, Plan & Stock</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #eaf4ee;
+            --surface-color: #ffffff;
+            --surface-subtle: #f2f7f4;
+            --border-color: #d2e4d9;
+            --text-primary: #153224;
+            --text-secondary: #567364;
+            --accent-primary: #2e8b57;
+            --accent-hover: #246f45;
+            --accent-glow: rgba(46, 139, 87, 0.15);
+            --success-color: #2e8b57;
+            --danger-color: #e05a47;
+            --card-shadow: 0 10px 30px -10px rgba(21, 50, 36, 0.06);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --content-bg: #f6faf7;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0d1a13;
+            --surface-color: #13261c;
+            --surface-subtle: #1b3327;
+            --border-color: #284c39;
+            --text-primary: #eaf4ee;
+            --text-secondary: #9cb8a9;
+            --accent-primary: #38a169;
+            --accent-hover: #48bb78;
+            --accent-glow: rgba(56, 161, 105, 0.25);
+            --success-color: #38a169;
+            --danger-color: #e56b5d;
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+            --content-bg: #0f2017;
+        }
+
+        body[data-feature="shop"][data-theme="light"] {
+            --accent-primary: #2e8b57;
+            --accent-hover: #246f45;
+            --accent-glow: rgba(46, 139, 87, 0.15);
+            --success-color: #2e8b57;
+            --bg-color: #eaf4ee;
+            --surface-subtle: #f2f7f4;
+            --border-color: #d2e4d9;
+            --text-secondary: #567364;
+            --content-bg: #f6faf7;
+        }
+
+        body[data-feature="plan"][data-theme="light"] {
+            --accent-primary: #3b9de8;
+            --accent-hover: #2785c9;
+            --accent-glow: rgba(59, 157, 232, 0.16);
+            --success-color: #3b9de8;
+            --bg-color: #edf7fd;
+            --surface-subtle: #f3f9fd;
+            --border-color: #cfe5f5;
+            --text-secondary: #55778e;
+            --content-bg: #f7fbfe;
+        }
+
+        body[data-feature="schedule"][data-theme="light"] {
+            --accent-primary: #7c3aed;
+            --accent-hover: #6d28d9;
+            --accent-glow: rgba(124, 58, 237, 0.16);
+            --success-color: #7c3aed;
+            --bg-color: #f5f3ff;
+            --surface-subtle: #faf5ff;
+            --border-color: #ddd6fe;
+            --text-secondary: #6b7280;
+            --content-bg: #fcfbfe;
+        }
+
+        body[data-feature="stock"][data-theme="light"] {
+            --accent-primary: #e7a51b;
+            --accent-hover: #c98d0e;
+            --accent-glow: rgba(231, 165, 27, 0.18);
+            --success-color: #e7a51b;
+            --bg-color: #fff8e8;
+            --surface-subtle: #fffaf0;
+            --border-color: #f0dfb7;
+            --text-secondary: #7b6a45;
+            --content-bg: #fffaf1;
+        }
+
+        body[data-feature="shop"][data-theme="dark"] {
+            --accent-primary: #38a169;
+            --accent-hover: #48bb78;
+            --accent-glow: rgba(56, 161, 105, 0.25);
+            --success-color: #38a169;
+            --bg-color: #0d1a13;
+            --surface-subtle: #1b3327;
+            --border-color: #284c39;
+            --text-secondary: #9cb8a9;
+            --content-bg: #0f2017;
+        }
+
+        body[data-feature="plan"][data-theme="dark"] {
+            --accent-primary: #55b7f5;
+            --accent-hover: #72c5f7;
+            --surface-color: #131826;
+            --accent-glow: rgba(85, 183, 245, 0.22);
+            --success-color: #55b7f5;
+            --bg-color: #0e1c25;
+            --surface-subtle: #162a37;
+            --border-color: #29485b;
+            --text-secondary: #9bb8c9;
+            --content-bg: #10212b;
+        }
+
+        body[data-feature="schedule"][data-theme="dark"] {
+            --accent-primary: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --surface-color: #111019;
+            --accent-glow: rgba(139, 92, 246, 0.25);
+            --success-color: #8b5cf6;
+            --bg-color: #0a0910;
+            --surface-subtle: #1a1726;
+            --border-color: #2e2845;
+            --text-secondary: #a19db5;
+            --content-bg: #13111c;
+        }
+
+        body[data-feature="stock"][data-theme="dark"] {
+            --accent-primary: #f2b83d;
+            --accent-hover: #ffc85b;
+            --surface-color: #262113;
+            --accent-glow: rgba(242, 184, 61, 0.22);
+            --success-color: #f2b83d;
+            --bg-color: #211a0d;
+            --surface-subtle: #302610;
+            --border-color: #57441c;
+            --text-secondary: #c7b783;
+            --content-bg: #261e0e;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .tab-btn.active:hover {
+            color: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: var(--surface-color);
+            border: none;
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: none;
+            transition: background-color 0.3s ease;
+        }
+
+        @media (min-width: 481px) {
+            body {
+                background-color: var(--bg-color);
+                padding: 16px;
+            }
+            .app-container {
+                max-width: 440px;
+                height: 880px;
+                max-height: 92vh;
+                border: 1px solid var(--border-color);
+                border-radius: 36px;
+                box-shadow: 0 30px 60px -15px rgba(21, 50, 36, 0.15);
+            }
+            [data-theme="dark"] .app-container {
+                box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+            }
+        }
+
+        body.left-handed .item-card {
+            flex-direction: row-reverse;
+        }
+        body.left-handed .item-center {
+            flex-direction: row-reverse;
+        }
+
+        header {
+            padding: env(safe-area-inset-top, 20px) 24px 14px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            z-index: 10;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .header-title p {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-btn {
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: 18px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-btn:hover {
+            border-color: var(--accent-primary);
+            background-color: var(--accent-glow);
+            color: var(--accent-primary);
+        }
+
+        .icon-toggle-btn {
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.95rem;
+        }
+
+        .icon-toggle-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+            background-color: var(--border-color);
+        }
+
+        .feature-tabs {
+            display: flex;
+            background: var(--surface-subtle);
+            padding: 4px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            gap: 4px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 2px;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        .input-section {
+            padding: 16px 24px;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            z-index: 5;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .input-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px 18px;
+            color: var(--text-primary);
+            font-size: 0.92rem;
+            font-weight: 500;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--accent-primary);
+            background-color: var(--surface-color);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .input-wrapper input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .quick-add-btn {
+            background-color: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+            box-shadow: 0 6px 16px var(--accent-glow);
+        }
+
+        .quick-add-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: var(--content-bg);
+            transition: background-color 0.3s ease;
+            padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 20px);
+        }
+
+        .content-area::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .content-area::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Weekly Calendar Grid Styles */
+        .calendar-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .calendar-header-row {
+            display: grid;
+            grid-template-columns: 50px repeat(7, 1fr);
+            background: var(--surface-subtle);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .calendar-header-cell {
+            padding: 10px 2px;
+            border-right: 1px solid var(--border-color);
+        }
+        .calendar-header-cell:last-child {
+            border-right: none;
+        }
+
+        .calendar-body {
+            display: flex;
+            flex-direction: column;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        .calendar-time-row {
+            display: grid;
+            grid-template-columns: 50px repeat(7, 1fr);
+            min-height: 36px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calendar-time-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-align: right;
+            padding-right: 6px;
+            padding-top: 4px;
+            border-right: 1px solid var(--border-color);
+            background: var(--surface-subtle);
+            font-weight: 600;
+        }
+
+        .calendar-slot-cell {
+            border-right: 1px solid var(--border-color);
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .calendar-slot-cell:last-child {
+            border-right: none;
+        }
+        .calendar-slot-cell:hover {
+            background: var(--accent-glow);
+        }
+
+        .calendar-event-block {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            color: white;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            cursor: pointer;
+        }
+
+        .event-title {
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.15em;
+            margin-bottom: 2px;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-secondary);
+            text-align: center;
+            gap: 14px;
+            padding: 40px 0;
+        }
+
+        .empty-state svg {
+            width: 54px;
+            height: 54px;
+            stroke: var(--text-secondary);
+            opacity: 0.35;
+        }
+
+        .empty-state p {
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .item-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: var(--transition-smooth);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+
+        .item-card.is-priority {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .priority-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .priority-btn.active {
+            color: #ffffff;
+            background-color: var(--danger-color);
+            box-shadow: 0 2px 6px rgba(224, 90, 71, 0.3);
+        }
+
+        .priority-btn:not(.active):hover {
+            background-color: var(--surface-subtle);
+            color: var(--danger-color);
+        }
+
+        .item-card.completed {
+            opacity: 0.5;
+            background-color: var(--surface-subtle);
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .item-card.completed .item-name {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checkbox-container {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 24px;
+            width: 24px;
+            background-color: var(--surface-subtle);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 8px;
+            top: 4px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .item-center {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .item-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90px;
+            cursor: pointer;
+            user-select: none;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .item-card.plan-card .item-center,
+        .item-card.stock-card .item-center {
+            justify-content: flex-start;
+        }
+        .item-card.plan-card .item-name,
+        .item-card.stock-card .item-name {
+            text-align: left;
+            max-width: 200px;
+        }
+
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .counter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            width: 26px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .counter-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: 28px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .unit-toggle-btn {
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            min-width: 56px;
+            text-align: center;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+
+        .delete-btn:hover {
+            color: var(--danger-color);
+            background-color: rgba(224, 90, 71, 0.1);
+        }
+
+        .bottom-action-bar {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            z-index: 8;
+        }
+
+        .stock-up-btn {
+            width: min(100%, 360px);
+            min-height: 52px;
+            border: 1px solid var(--accent-primary);
+            border-radius: 18px;
+            background: var(--accent-primary);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 24px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.98rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 7px 18px var(--accent-glow);
+            transition: var(--transition-smooth);
+        }
+
+        .stock-up-btn:not(:disabled):hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .stock-up-btn:disabled {
+            background: var(--surface-subtle);
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-sheet {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-top-left-radius: 32px;
+            border-top-right-radius: 32px;
+            padding: 24px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.2);
+            padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 24px);
+        }
+
+        .modal-overlay.active .modal-sheet {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .modal-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .close-modal-btn {
+            background: var(--surface-subtle);
+            border: none;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .database-list {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 12px;
+        }
+
+        .database-item {
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            padding: 12px 18px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .database-item-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            flex-grow: 1;
+            color: var(--text-primary);
+        }
+
+        .database-item-add {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            background: var(--accent-glow);
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .db-empty {
+            text-align: center;
+            padding: 35px 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .form-group input, .form-group select {
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 0.92rem;
+            outline: none;
+        }
+
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            overflow-y: auto;
+        }
+
+        .setting-item {
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            padding: 16px 18px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-info h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .setting-info p {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .setting-action-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+        }
+    </style>
+</head>
+<body data-theme="light" data-feature="shop">
+
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="header-top">
+                <div class="header-title">
+                    <h1 id="main-heading">TimeToShop</h1>
+                    <p id="item-counter-sub">0 items remaining</p>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" id="open-db-btn" title="Saved Items Database">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                        Database
+                    </button>
+                    <button class="icon-toggle-btn" id="open-settings-btn" onclick="toggleSettingsModal(true)" title="Open Settings">
+                        ⚙️
+                    </button>
+                </div>
+            </div>
+            <!-- Feature switcher tabs -->
+            <div class="feature-tabs">
+                <button class="tab-btn active" id="tab-shop" onclick="switchFeature('shop')">Shop</button>
+                <button class="tab-btn" id="tab-plan" onclick="switchFeature('plan')">Plan</button>
+                <button class="tab-btn" id="tab-schedule" onclick="switchFeature('schedule')">Schedule</button>
+                <button class="tab-btn" id="tab-stock" onclick="switchFeature('stock')">Stock</button>
+            </div>
+        </header>
+
+        <!-- Input Section -->
+        <div class="input-section" id="input-section-bar">
+            <div class="input-wrapper">
+                <input type="text" id="item-input" placeholder="What do you need to buy?" autocomplete="off">
+            </div>
+            <button class="quick-add-btn" id="add-btn" title="Add">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area" id="shopping-list">
+            <!-- Dynamically populated items/tasks -->
+        </div>
+
+        <!-- Bottom action bar -->
+        <div class="bottom-action-bar" id="stock-up-bar">
+            <button class="stock-up-btn" id="done-shopping-btn" onclick="addToStockFromShop()" title="Check all items before stocking up" disabled>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Stock Up</span>
+            </button>
+        </div>
+
+        <!-- Add Schedule Event Modal -->
+        <div class="modal-overlay" id="schedule-modal">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h2>Add Schedule Event</h2>
+                    <button class="close-modal-btn" onclick="toggleScheduleModal(false)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="settings-list">
+                    <div class="form-group">
+                        <label>Event Name</label>
+                        <input type="text" id="schedule-name-input" placeholder="e.g., Calculus II Lecture">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="schedule-cat-input"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Day of the Week</label>
+                        <select id="schedule-day-input">
+                            <option value="Mon">Monday</option>
+                            <option value="Tue">Tuesday</option>
+                            <option value="Wed">Wednesday</option>
+                            <option value="Thu">Thursday</option>
+                            <option value="Fri">Friday</option>
+                            <option value="Sat">Saturday</option>
+                            <option value="Sun">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Time (30-min increments)</label>
+                        <select id="schedule-start-input"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <select id="schedule-duration-input">
+                            <option value="30">30 minutes</option>
+                            <option value="60" selected>1 hour</option>
+                            <option value="90">1.5 hours</option>
+                            <option value="120">2 hours</option>
+                            <option value="150">2.5 hours</option>
+                            <option value="180">3 hours</option>
+                        </select>
+                    </div>
+                    <button class="stock-up-btn" style="width:100%; margin-top: 10px;" onclick="submitScheduleEvent()">Add to Calendar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Categories Modal -->
+        <div class="modal-overlay" id="categories-modal">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h2>Manage Categories</h2>
+                    <button class="close-modal-btn" onclick="toggleCategoriesModal(false)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="settings-list">
+                    <div class="form-group">
+                        <label>Category Name</label>
+                        <input type="text" id="new-cat-name" placeholder="e.g., Sports, Hobby">
+                    </div>
+                    <div class="form-group">
+                        <label>Category Color</label>
+                        <input type="color" id="new-cat-color" value="#7c3aed" style="height: 44px; padding: 4px; cursor: pointer;">
+                    </div>
+                    <button class="stock-up-btn" style="width:100%; margin-bottom: 10px;" onclick="addNewCategory()">Add Category</button>
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 10px 0;">
+                    <h3 style="font-size:0.9rem; font-weight:700; margin-bottom: 6px;">Existing Categories</h3>
+                    <div id="category-list-container" class="database-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Details Modal -->
+        <div class="modal-overlay" id="event-details-modal">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h2>Event Details</h2>
+                    <button class="close-modal-btn" onclick="toggleEventDetailsModal(false)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 id="det-event-name" style="font-size: 1.1rem; font-weight:700;">Event Name</h3>
+                            <p id="det-event-category" style="margin-top: 4px; font-weight:600;">Category</p>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Time Window</h3>
+                            <p id="det-event-time">08:00 - 09:00 (60 mins)</p>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Day</h3>
+                            <p id="det-event-day">Monday</p>
+                        </div>
+                    </div>
+                    <button class="stock-up-btn" style="width:100%; background: var(--danger-color); border-color: var(--danger-color); margin-top: 10px;" onclick="deleteCurrentEvent()">Delete Event</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database Modal -->
+        <div class="modal-overlay" id="db-modal">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h2>Saved Items Database</h2>
+                    <button class="close-modal-btn" id="close-db-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="database-list" id="database-list"></div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal-overlay" id="settings-modal">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="close-modal-btn" onclick="toggleSettingsModal(false)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Appearance</h3>
+                            <p>Switch between light and dark themes</p>
+                        </div>
+                        <button class="setting-action-btn" onclick="toggleTheme()">
+                            <span id="theme-btn-icon">🌙</span> <span id="theme-btn-text">Dark Mode</span>
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Left-Hand Mode</h3>
+                            <p>Optimize item layout for left-hand use</p>
+                        </div>
+                        <button class="setting-action-btn" onclick="toggleLeftHandMode()">
+                            <span id="lefthand-btn-icon">✋</span> <span id="lefthand-btn-text">Disabled</span>
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Sound & Haptics</h3>
+                            <p>Tactile sounds feedback</p>
+                        </div>
+                        <button class="setting-action-btn" onclick="toggleAudio()">
+                            <span id="audio-btn-icon">🔊</span> <span id="audio-btn-text">Enabled</span>
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Backup Data</h3>
+                            <p>Download a backup file of all your lists</p>
+                        </div>
+                        <button class="setting-action-btn" onclick="exportDataBackup()">Export</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Restore Data</h3>
+                            <p>Load your lists from a backup file</p>
+                        </div>
+                        <button class="setting-action-btn" onclick="document.getElementById('import-file-input').click()">Import</button>
+                        <input type="file" id="import-file-input" style="display: none;" accept=".json" onchange="importDataBackup(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFeature = 'shop'; 
+        let shoppingList = JSON.parse(localStorage.getItem('timetoshop_shopping_list')) || [];
+        let planList = JSON.parse(localStorage.getItem('timetoplan_plan_list')) || [];
+        let stockList = JSON.parse(localStorage.getItem('timetostock_stock_list')) || [];
+        let scheduleList = JSON.parse(localStorage.getItem('timetoschedule_schedule_list')) || [];
+        let categoriesList = JSON.parse(localStorage.getItem('timetoschedule_categories')) || [
+            { id: 'work', name: 'Work', color: '#7c3aed' },
+            { id: 'study', name: 'Study', color: '#3b9de8' },
+            { id: 'meeting', name: 'Meeting', color: '#e05a47' },
+            { id: 'personal', name: 'Personal', color: '#2e8b57' }
+        ];
+        let itemDatabase = JSON.parse(localStorage.getItem('timetoshop_item_database')) || [];
+        let soundEnabled = localStorage.getItem('timetoshop_sound_enabled') !== 'false';
+        let currentTheme = localStorage.getItem('timetoshop_theme') || 'light';
+        let leftHandMode = localStorage.getItem('timetoshop_lefthand_enabled') === 'true';
+        let selectedEventId = null;
+
+        document.body.setAttribute('data-theme', currentTheme);
+        if (leftHandMode) document.body.classList.add('left-handed');
+
+        function populateTimeDropdown() {
+            const selectEl = document.getElementById('schedule-start-input');
+            if (!selectEl) return;
+            let optionsHTML = '';
+            for (let h = 7; h <= 23; h++) {
+                for (let m = 0; m < 60; m += 30) {
+                    const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+                    optionsHTML += `<option value="${timeStr}">${timeStr}</option>`;
+                }
+            }
+            selectEl.innerHTML = optionsHTML;
+        }
+        populateTimeDropdown();
+
+        function populateCategoryDropdown() {
+            const selectEl = document.getElementById('schedule-cat-input');
+            if (!selectEl) return;
+            selectEl.innerHTML = categoriesList.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+        }
+        populateCategoryDropdown();
+
+        function exportDataBackup() {
+            const backupData = {
+                shoppingList,
+                planList,
+                stockList,
+                scheduleList,
+                categoriesList,
+                itemDatabase,
+                soundEnabled,
+                currentTheme,
+                leftHandMode,
+                version: 1
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `timetoschedule_backup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            playSound('tap');
+        }
+
+        function importDataBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed.shoppingList) shoppingList = parsed.shoppingList;
+                    if (parsed.planList) planList = parsed.planList;
+                    if (parsed.stockList) stockList = parsed.stockList;
+                    if (parsed.scheduleList) scheduleList = parsed.scheduleList;
+                    if (parsed.categoriesList) categoriesList = parsed.categoriesList;
+                    if (parsed.itemDatabase) itemDatabase = parsed.itemDatabase;
+                    if (parsed.soundEnabled !== undefined) soundEnabled = parsed.soundEnabled;
+                    if (parsed.currentTheme) {
+                        currentTheme = parsed.currentTheme;
+                        document.body.setAttribute('data-theme', currentTheme);
+                    }
+                    if (parsed.leftHandMode !== undefined) {
+                        leftHandMode = parsed.leftHandMode;
+                        document.body.classList.toggle('left-handed', leftHandMode);
+                    }
+                    saveState();
+                    populateCategoryDropdown();
+                    updateSettingsUI();
+                    render();
+                    alert("Data successfully restored!");
+                } catch (err) {
+                    alert("Failed to import backup file. Invalid format.");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('timetoshop_theme', currentTheme);
+            updateSettingsUI();
+            playSound('tap');
+        }
+
+        function toggleLeftHandMode() {
+            leftHandMode = !leftHandMode;
+            document.body.classList.toggle('left-handed', leftHandMode);
+            localStorage.setItem('timetoshop_lefthand_enabled', leftHandMode);
+            updateSettingsUI();
+            playSound('tap');
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('timetoshop_sound_enabled', soundEnabled);
+            updateSettingsUI();
+            playSound('tap');
+        }
+
+        function updateSettingsUI() {
+            const themeIcon = document.getElementById('theme-btn-icon');
+            const themeText = document.getElementById('theme-btn-text');
+            const lhIcon = document.getElementById('lefthand-btn-icon');
+            const lhText = document.getElementById('lefthand-btn-text');
+            const audioIcon = document.getElementById('audio-btn-icon');
+            const audioText = document.getElementById('audio-btn-text');
+
+            if (themeIcon) themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+            if (themeText) themeText.textContent = currentTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            if (lhIcon) lhIcon.textContent = leftHandMode ? '✅' : '✋';
+            if (lhText) lhText.textContent = leftHandMode ? 'Enabled' : 'Disabled';
+            if (audioIcon) audioIcon.textContent = soundEnabled ? '🔊' : '🔇';
+            if (audioText) audioText.textContent = soundEnabled ? 'Enabled' : 'Muted';
+        }
+
+        let audioCtx = null;
+        function playSound(type) {
+            if (!soundEnabled) return;
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'add') {
+                osc.frequency.setValueAtTime(320, now);
+                osc.frequency.exponentialRampToValueAtTime(640, now + 0.08);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+            } else if (type === 'delete') {
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.1);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            } else {
+                osc.frequency.setValueAtTime(400, now);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+            }
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
+
+        const mainHeading = document.getElementById('main-heading');
+        const tabShop = document.getElementById('tab-shop');
+        const tabPlan = document.getElementById('tab-plan');
+        const tabSchedule = document.getElementById('tab-schedule');
+        const tabStock = document.getElementById('tab-stock');
+        const itemInput = document.getElementById('item-input');
+        const addBtn = document.getElementById('add-btn');
+        const shoppingListContainer = document.getElementById('shopping-list');
+        const itemCounterSub = document.getElementById('item-counter-sub');
+        const openDbBtn = document.getElementById('open-db-btn');
+        const doneShoppingBtn = document.getElementById('done-shopping-btn');
+        const stockUpBar = document.getElementById('stock-up-bar');
+        const inputSectionBar = document.getElementById('input-section-bar');
+        const dbModal = document.getElementById('db-modal');
+        const settingsModal = document.getElementById('settings-modal');
+        const scheduleModal = document.getElementById('schedule-modal');
+        const categoriesModal = document.getElementById('categories-modal');
+        const eventDetailsModal = document.getElementById('event-details-modal');
+        const databaseListContainer = document.getElementById('database-list');
+
+        function saveState() {
+            localStorage.setItem('timetoshop_shopping_list', JSON.stringify(shoppingList));
+            localStorage.setItem('timetoplan_plan_list', JSON.stringify(planList));
+            localStorage.setItem('timetostock_stock_list', JSON.stringify(stockList));
+            localStorage.setItem('timetoschedule_schedule_list', JSON.stringify(scheduleList));
+            localStorage.setItem('timetoschedule_categories', JSON.stringify(categoriesList));
+            localStorage.setItem('timetoshop_item_database', JSON.stringify(itemDatabase));
+        }
+
+        function switchFeature(feature) {
+            currentFeature = feature;
+            document.body.setAttribute('data-feature', feature);
+            tabShop.classList.remove('active');
+            tabPlan.classList.remove('active');
+            tabSchedule.classList.remove('active');
+            tabStock.classList.remove('active');
+
+            playSound('tap');
+
+            if (feature === 'shop') {
+                tabShop.classList.add('active');
+                mainHeading.textContent = 'TimeToShop';
+                itemInput.placeholder = 'What do you need to buy?';
+                openDbBtn.style.display = 'flex';
+                doneShoppingBtn.style.display = 'flex';
+                stockUpBar.style.display = 'flex';
+                inputSectionBar.style.display = 'flex';
+            } else if (feature === 'plan') {
+                tabPlan.classList.add('active');
+                mainHeading.textContent = 'TimeToPlan';
+                itemInput.placeholder = 'What do you need to do?';
+                openDbBtn.style.display = 'none';
+                doneShoppingBtn.style.display = 'none';
+                stockUpBar.style.display = 'none';
+                inputSectionBar.style.display = 'flex';
+            } else if (feature === 'schedule') {
+                tabSchedule.classList.add('active');
+                mainHeading.textContent = 'TimeToSchedule';
+                openDbBtn.style.display = 'none';
+                doneShoppingBtn.style.display = 'none';
+                stockUpBar.style.display = 'none';
+                inputSectionBar.style.display = 'none';
+            } else {
+                tabStock.classList.add('active');
+                mainHeading.textContent = 'TimeToStock';
+                itemInput.placeholder = 'Add item to kitchen pantry...';
+                openDbBtn.style.display = 'none';
+                doneShoppingBtn.style.display = 'none';
+                stockUpBar.style.display = 'none';
+                inputSectionBar.style.display = 'flex';
+            }
+            if (dbModal) dbModal.classList.remove('active');
+            if (scheduleModal) scheduleModal.classList.remove('active');
+            if (categoriesModal) categoriesModal.classList.remove('active');
+            if (eventDetailsModal) eventDetailsModal.classList.remove('active');
+            if (settingsModal) settingsModal.classList.remove('active');
+            render();
+        }
+
+        function toggleScheduleModal(show) {
+            if (show) {
+                populateCategoryDropdown();
+                scheduleModal.classList.add('active');
+                playSound('tap');
+            } else {
+                scheduleModal.classList.remove('active');
+            }
+        }
+
+        function toggleCategoriesModal(show) {
+            if (show) {
+                renderCategoriesList();
+                categoriesModal.classList.add('active');
+                playSound('tap');
+            } else {
+                categoriesModal.classList.remove('active');
+            }
+        }
+
+        function toggleEventDetailsModal(show, eventId = null) {
+            selectedEventId = eventId;
+            if (show && eventId) {
+                const event = scheduleList.find(c => c.id === eventId);
+                if (!event) return;
+                const cat = categoriesList.find(c => c.id === event.category) || { name: event.category };
+                
+                const [h, m] = event.startTime.split(':').map(Number);
+                const totalMins = h * 60 + m + event.duration;
+                const endH = Math.floor(totalMins / 60) % 24;
+                const endM = totalMins % 60;
+                const endTimeStr = `${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`;
+
+                document.getElementById('det-event-name').textContent = event.name;
+                document.getElementById('det-event-category').textContent = `Category: ${cat.name}`;
+                document.getElementById('det-event-time').textContent = `${event.startTime} - ${endTimeStr} (${event.duration} mins)`;
+                
+                const dayMap = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday' };
+                document.getElementById('det-event-day').textContent = dayMap[event.day] || event.day;
+
+                eventDetailsModal.classList.add('active');
+                playSound('tap');
+            } else {
+                eventDetailsModal.classList.remove('active');
+            }
+        }
+
+        function deleteCurrentEvent() {
+            if (selectedEventId) {
+                scheduleList = scheduleList.filter(c => c.id !== selectedEventId);
+                playSound('delete');
+                saveState();
+                toggleEventDetailsModal(false);
+                render();
+            }
+        }
+
+        function addNewCategory() {
+            const nameInput = document.getElementById('new-cat-name');
+            const colorInput = document.getElementById('new-cat-color');
+            const name = nameInput.value.trim();
+            if (!name) return;
+            const id = name.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + Date.now();
+
+            categoriesList.push({ id, name, color: colorInput.value });
+            playSound('add');
+            saveState();
+            nameInput.value = '';
+            renderCategoriesList();
+            populateCategoryDropdown();
+            render();
+        }
+
+        function deleteCategory(id) {
+            if (categoriesList.length <= 1) {
+                alert("You must keep at least one category.");
+                return;
+            }
+            categoriesList = categoriesList.filter(c => c.id !== id);
+            playSound('delete');
+            saveState();
+            renderCategoriesList();
+            populateCategoryDropdown();
+            render();
+        }
+
+        function renderCategoriesList() {
+            const container = document.getElementById('category-list-container');
+            if (!container) return;
+            container.innerHTML = categoriesList.map(cat => `
+                <div class="database-item">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="width:14px; height:14px; border-radius:50%; background:${cat.color}; display:inline-block;"></span>
+                        <span class="database-item-name">${cat.name}</span>
+                    </div>
+                    <button class="database-item-add" style="color:var(--danger-color); background:rgba(224,90,71,0.1);" onclick="deleteCategory('${cat.id}')">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function submitScheduleEvent() {
+            const nameInput = document.getElementById('schedule-name-input');
+            const name = nameInput.value.trim();
+            if (!name) return;
+            const category = document.getElementById('schedule-cat-input').value;
+            const day = document.getElementById('schedule-day-input').value;
+            const startTime = document.getElementById('schedule-start-input').value;
+            const duration = parseInt(document.getElementById('schedule-duration-input').value, 10);
+
+            scheduleList.push({
+                id: 'sched_' + Date.now(),
+                name,
+                category,
+                day,
+                startTime,
+                duration
+            });
+
+            playSound('add');
+            saveState();
+            toggleScheduleModal(false);
+            nameInput.value = '';
+            render();
+        }
+
+        function capitalize(str) {
+            if (!str) return '';
+            return str.trim().charAt(0).toUpperCase() + str.trim().slice(1);
+        }
+
+        function addItem(name, quantity = 100, unit = 'Grams', completed = false, priority = false) {
+            const formattedName = capitalize(name);
+            if (!formattedName) return;
+            const newItem = {
+                id: 'item_' + Date.now() + Math.random().toString(36).substr(2, 9),
+                name: formattedName,
+                quantity,
+                unit,
+                completed,
+                priority
+            };
+
+            if (currentFeature === 'shop') {
+                shoppingList.push(newItem);
+                if (!itemDatabase.includes(formattedName)) itemDatabase.push(formattedName);
+            } else if (currentFeature === 'plan') {
+                planList.unshift(newItem);
+            } else {
+                stockList.push(newItem);
+            }
+            playSound('add');
+            saveState();
+            render();
+        }
+
+        function removeItem(id) {
+            if (currentFeature === 'shop') shoppingList = shoppingList.filter(i => i.id !== id);
+            else if (currentFeature === 'plan') planList = planList.filter(i => i.id !== id);
+            else stockList = stockList.filter(i => i.id !== id);
+            playSound('delete');
+            saveState();
+            render();
+        }
+
+        function toggleComplete(id) {
+            const list = currentFeature === 'shop' ? shoppingList : (currentFeature === 'plan' ? planList : stockList);
+            const item = list.find(i => i.id === id);
+            if (item) {
+                item.completed = !item.completed;
+                playSound('tap');
+                saveState();
+                render();
+            }
+        }
+
+        function togglePriority(id) {
+            const list = currentFeature === 'shop' ? shoppingList : (currentFeature === 'plan' ? planList : stockList);
+            const item = list.find(i => i.id === id);
+            if (item) {
+                item.priority = !item.priority;
+                playSound('tap');
+                saveState();
+                render();
+            }
+        }
+
+        function updateQuantity(id, delta) {
+            const list = currentFeature === 'shop' ? shoppingList : stockList;
+            const item = list.find(i => i.id === id);
+            if (item) {
+                item.quantity = Math.max(1, item.quantity + delta);
+                playSound('tap');
+                saveState();
+                render();
+            }
+        }
+
+        function toggleUnit(id) {
+            const list = currentFeature === 'shop' ? shoppingList : stockList;
+            const item = list.find(i => i.id === id);
+            if (item) {
+                item.unit = item.unit === 'Grams' ? 'Units' : 'Grams';
+                item.quantity = item.unit === 'Units' ? 1 : 100;
+                playSound('tap');
+                saveState();
+                render();
+            }
+        }
+
+        function addToStockFromShop() {
+            shoppingList.forEach(shopItem => {
+                stockList.push({ ...shopItem, id: 'stock_' + Date.now() });
+            });
+            shoppingList = [];
+            playSound('add');
+            saveState();
+            switchFeature('stock');
+        }
+
+        function render() {
+            if (currentFeature === 'schedule') {
+                itemCounterSub.textContent = `${scheduleList.length} scheduled event${scheduleList.length === 1 ? '' : 's'}`;
+                
+                let timeRowsHTML = '';
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+                for (let h = 7; h <= 23; h++) {
+                    for (let m = 0; m < 60; m += 30) {
+                        const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+                        
+                        let cellsHTML = '';
+                        days.forEach(day => {
+                            const event = scheduleList.find(c => c.day === day && c.startTime === timeStr);
+                            let eventBlock = '';
+                            if (event) {
+                                const rowSpan = event.duration / 30;
+                                const heightPx = rowSpan * 36 - 4;
+                                const catObj = categoriesList.find(c => c.id === event.category);
+                                const bgColor = catObj ? catObj.color : '#7c3aed';
+                                
+                                eventBlock = `
+                                    <div class="calendar-event-block" style="height: ${heightPx}px; background: ${bgColor};" onclick="event.stopPropagation(); toggleEventDetailsModal(true, '${event.id}')">
+                                        <div class="event-title">${event.name}</div>
+                                        <div style="font-size:0.6rem; opacity:0.9; margin-top:auto;">${event.startTime} (${event.duration}m)</div>
+                                    </div>
+                                `;
+                            }
+                            cellsHTML += `<div class="calendar-slot-cell" onclick="toggleScheduleModal(true); document.getElementById('schedule-day-input').value='${day}'; document.getElementById('schedule-start-input').value='${timeStr}';">${eventBlock}</div>`;
+                        });
+
+                        timeRowsHTML += `
+                            <div class="calendar-time-row">
+                                <div class="calendar-time-label">${timeStr}</div>
+                                ${cellsHTML}
+                            </div>
+                        `;
+                    }
+                }
+
+                shoppingListContainer.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; flex-shrink: 0;">
+                        <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Tap slot to add event</span>
+                        <div style="display:flex; gap:6px;">
+                            <button onclick="toggleCategoriesModal(true)" style="background:var(--surface-subtle); border:1px solid var(--border-color); color:var(--text-primary); padding:8px 12px; border-radius:12px; font-weight:600; cursor:pointer; font-size:0.78rem;">Categories</button>
+                            <button onclick="toggleScheduleModal(true)" style="background:var(--accent-primary); color:white; border:none; padding:8px 14px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.8rem;">+ Add Event</button>
+                        </div>
+                    </div>
+                    <div class="calendar-container">
+                        <div class="calendar-header-row">
+                            <div class="calendar-header-cell">Time</div>
+                            <div class="calendar-header-cell">Mon</div>
+                            <div class="calendar-header-cell">Tue</div>
+                            <div class="calendar-header-cell">Wed</div>
+                            <div class="calendar-header-cell">Thu</div>
+                            <div class="calendar-header-cell">Fri</div>
+                            <div class="calendar-header-cell">Sat</div>
+                            <div class="calendar-header-cell">Sun</div>
+                        </div>
+                        <div class="calendar-body">
+                            ${timeRowsHTML}
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            let currentList = currentFeature === 'shop' ? shoppingList : (currentFeature === 'plan' ? planList : stockList);
+
+            if (currentList.length === 0) {
+                shoppingListContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>No items found.<br>Add items above to get started.</p>
+                    </div>
+                `;
+            } else {
+                shoppingListContainer.innerHTML = currentList.map(item => `
+                    <div class="item-card ${currentFeature === 'plan' ? 'plan-card' : ''} ${item.completed ? 'completed' : ''} ${item.priority ? 'is-priority' : ''}" id="${item.id}">
+                        <div class="item-left">
+                            <label class="checkbox-container">
+                                <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleComplete('${item.id}')">
+                                <span class="checkmark"></span>
+                            </label>
+                            <button class="priority-btn ${item.priority ? 'active' : ''}" onclick="togglePriority('${item.id}')" title="Toggle Priority">!</button>
+                        </div>
+                        <div class="item-center">
+                            <span class="item-name">${item.name}</span>
+                            ${currentFeature !== 'plan' ? `
+                                <div class="counter-controls">
+                                    <button class="counter-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                                    <span class="counter-value">${item.quantity}</span>
+                                    <button class="counter-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                                </div>
+                                <button class="unit-toggle-btn" onclick="toggleUnit('${item.id}')">${item.unit}</button>
+                            ` : ''}
+                        </div>
+                        <button class="delete-btn" onclick="removeItem('${item.id}')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            itemCounterSub.textContent = `${currentList.filter(i => !i.completed).length} remaining`;
+            if (doneShoppingBtn) {
+                doneShoppingBtn.disabled = shoppingList.length === 0 || !shoppingList.every(i => i.completed);
+            }
+        }
+
+        addBtn.addEventListener('click', () => {
+            const val = itemInput.value.trim();
+            if (val) {
+                addItem(val);
+                itemInput.value = '';
+                itemInput.focus();
+            }
+        });
+
+        itemInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && itemInput.value.trim()) {
+                addItem(itemInput.value.trim());
+                itemInput.value = '';
+            }
+        });
+
+        openDbBtn.addEventListener('click', () => {
+            dbModal.classList.add('active');
+            databaseListContainer.innerHTML = itemDatabase.map(dbItem => `
+                <div class="database-item">
+                    <span class="database-item-name" onclick="addItem('${dbItem}'); dbModal.classList.remove('active');">${dbItem}</span>
+                    <button class="database-item-add" onclick="addItem('${dbItem}'); dbModal.classList.remove('active');">Add</button>
+                </div>
+            `).join('') || '<div class="db-empty">No saved items.</div>';
+        });
+
+        document.getElementById('close-db-btn').addEventListener('click', () => dbModal.classList.remove('active'));
+
+        function toggleSettingsModal(show) {
+            settingsModal.classList.toggle('active', show);
+        }
+
+        render();
+    </script>
+</body>
+</html>

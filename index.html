@@ -738,11 +738,11 @@
             background-color: var(--surface-color);
             border: 1px solid var(--border-color);
             border-radius: 18px;
-            padding: 14px 18px;
+            padding: 14px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 8px;
             transition: var(--transition-smooth);
             animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             box-shadow: var(--card-shadow);
@@ -770,6 +770,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            min-width: 0;
         }
 
         .checkbox-container {
@@ -829,9 +830,14 @@
         .item-center {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             flex-grow: 1;
+            min-width: 0;
             justify-content: center;
+        }
+
+        .item-card > .delete-btn {
+            min-width: 32px;
         }
 
         .item-name {
@@ -839,12 +845,13 @@
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-primary);
-            text-align: center;
-            flex-grow: 1;
+            text-align: left;
+            flex: 1 1 auto;
+            min-width: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 90px;
+            max-width: none;
             cursor: pointer;
             user-select: none;
             padding: 4px 6px;
@@ -859,7 +866,7 @@
         .item-card.plan-card .item-name,
         .item-card.stock-card .item-name {
             text-align: left;
-            max-width: 200px;
+            max-width: none;
         }
 
         .counter-controls {
@@ -1878,7 +1885,7 @@
             return str.trim().charAt(0).toUpperCase() + str.trim().slice(1);
         }
 
-        function addItem(name, quantity = 100, unit = 'Grams', completed = false) {
+        function addItem(name, quantity = 1, unit = 'Units', completed = false) {
             const formattedName = capitalize(name);
             if (!formattedName) return;
             const newItem = {

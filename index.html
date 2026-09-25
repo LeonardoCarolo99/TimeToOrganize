@@ -541,7 +541,7 @@
         .schedule-overview {
             display: grid;
             grid-template-columns: 40px repeat(7, minmax(0, 1fr));
-            height: 300px;
+            height: 520px;
             overflow: hidden;
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -569,7 +569,7 @@
         .overview-time-axis,
         .overview-day-column {
             display: grid;
-            grid-template-rows: repeat(17, 1fr);
+            grid-template-rows: repeat(34, 1fr);
             min-height: 0;
         }
 
@@ -591,7 +591,7 @@
         .overview-day-column {
             position: relative;
             border-right: 1px solid var(--border-color);
-            background: repeating-linear-gradient(to bottom, transparent 0, transparent calc(5.882% - 1px), var(--border-color) 5.882%);
+            background: repeating-linear-gradient(to bottom, transparent 0, transparent calc(2.941% - 1px), var(--border-color) 2.941%);
             cursor: pointer;
         }
 
@@ -2030,9 +2030,10 @@
         function renderScheduleOverview() {
             const startOfDay = 7 * 60;
             const minutesInView = 17 * 60;
-            const timeLabels = Array.from({ length: 17 }, (_, index) => {
-                const hour = index + 7;
-                return `<div class="overview-time-label">${String(hour).padStart(2, '0')}:00</div>`;
+            const timeLabels = Array.from({ length: 34 }, (_, index) => {
+                const hour = Math.floor(index / 2) + 7;
+                const minute = index % 2 === 0 ? '00' : '30';
+                return `<div class="overview-time-label">${minute === '00' ? `${String(hour).padStart(2, '0')}:00` : ''}</div>`;
             }).join('');
             const columns = scheduleDays.map(day => {
                 const events = scheduleList.filter(event => event.day === day).map(event => {

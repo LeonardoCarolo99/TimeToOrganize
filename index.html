@@ -601,11 +601,13 @@
 
         .overview-event {
             position: absolute;
-            left: 3px;
-            right: 3px;
+            left: 0;
+            right: 0;
             min-height: 3px;
-            border-radius: 4px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+            border-radius: 0;
+            border-top: 1px solid var(--content-bg);
+            border-bottom: 1px solid var(--content-bg);
+            box-shadow: none;
             cursor: pointer;
             z-index: 1;
         }
@@ -613,6 +615,18 @@
         .overview-event.important {
             outline: 2px solid var(--danger-color);
             outline-offset: -2px;
+        }
+
+        .overview-important-mark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 0.78rem;
+            font-weight: 800;
+            line-height: 1;
+            pointer-events: none;
         }
 
         .overview-legend {
@@ -2046,7 +2060,7 @@
                 const events = scheduleList.filter(event => event.day === day).map(event => {
                     const top = Math.max(0, (getScheduleStartMinutes(event) - startOfDay) / minutesInView * 100);
                     const height = Math.max(0.8, event.duration / minutesInView * 100);
-                    return `<div class="overview-event ${event.important ? 'important' : ''}" style="top:${top}%; height:${height}%; background:${getScheduleCategoryColor(event)};" title="${event.name}" onclick="event.stopPropagation(); toggleEventDetailsModal(true, '${event.id}')"></div>`;
+                    return `<div class="overview-event ${event.important ? 'important' : ''}" style="top:${top}%; height:${height}%; background:${getScheduleCategoryColor(event)};" title="${event.name}" onclick="event.stopPropagation(); toggleEventDetailsModal(true, '${event.id}')">${event.important ? '<span class="overview-important-mark">!</span>' : ''}</div>`;
                 }).join('');
                 return `<div class="overview-day-column" onclick="openScheduleDay('${day}')">${events}</div>`;
             }).join('');

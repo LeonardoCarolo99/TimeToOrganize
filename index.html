@@ -480,6 +480,189 @@
             background: var(--accent-glow);
         }
 
+        .schedule-toolbar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .schedule-toolbar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .schedule-view-toggle,
+        .schedule-day-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        .schedule-view-toggle button,
+        .schedule-day-tabs button {
+            border: 0;
+            border-radius: 8px;
+            padding: 7px 10px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .schedule-view-toggle button.active,
+        .schedule-day-tabs button.active {
+            background: var(--accent-primary);
+            color: #ffffff;
+            box-shadow: 0 3px 8px var(--accent-glow);
+        }
+
+        .schedule-day-tabs {
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .schedule-day-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .schedule-day-tabs button {
+            min-width: 39px;
+            flex-shrink: 0;
+        }
+
+        .schedule-overview {
+            display: grid;
+            grid-template-columns: 40px repeat(7, minmax(0, 1fr));
+            height: 300px;
+            overflow: hidden;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .overview-day-labels {
+            display: grid;
+            grid-template-columns: 40px repeat(7, minmax(0, 1fr));
+            margin-bottom: 0;
+        }
+
+        .overview-day-label {
+            padding: 0 2px 1px;
+            color: var(--text-secondary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.66rem;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .overview-time-axis,
+        .overview-day-column {
+            display: grid;
+            grid-template-rows: repeat(17, 1fr);
+            min-height: 0;
+        }
+
+        .overview-time-axis {
+            background: var(--surface-subtle);
+            border-right: 1px solid var(--border-color);
+        }
+
+        .overview-time-label {
+            min-height: 0;
+            padding: 2px 4px 0 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.56rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .overview-day-column {
+            position: relative;
+            border-right: 1px solid var(--border-color);
+            background: repeating-linear-gradient(to bottom, transparent 0, transparent calc(5.882% - 1px), var(--border-color) 5.882%);
+            cursor: pointer;
+        }
+
+        .overview-day-column:last-child {
+            border-right: 0;
+        }
+
+        .overview-event {
+            position: absolute;
+            left: 3px;
+            right: 3px;
+            min-height: 3px;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .overview-event.important {
+            outline: 2px solid var(--danger-color);
+            outline-offset: -2px;
+        }
+
+        .overview-legend {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 1px 2px;
+            scrollbar-width: none;
+        }
+
+        .overview-legend::-webkit-scrollbar {
+            display: none;
+        }
+
+        .overview-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            color: var(--text-secondary);
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .overview-legend-swatch {
+            width: 8px;
+            height: 8px;
+            border-radius: 3px;
+        }
+
+        .day-calendar-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .day-calendar-body {
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        .day-calendar-body .calendar-time-row {
+            grid-template-columns: 50px 1fr;
+        }
+
         .calendar-event-block {
             position: absolute;
             top: 2px;
@@ -501,12 +684,30 @@
 
         .event-title {
             word-break: break-word;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            flex: 1;
             overflow: hidden;
             line-height: 1.15em;
             margin-bottom: 2px;
+            padding-right: 4px;
+        }
+
+        .event-important-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding: 2px 5px 0 0;
+            background: var(--danger-color);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 800;
+            line-height: 1;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            pointer-events: none;
         }
 
         .empty-state {
@@ -546,38 +747,6 @@
             animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             box-shadow: var(--card-shadow);
             position: relative;
-        }
-
-        .item-card.is-priority {
-            border-left: 4px solid var(--danger-color);
-        }
-
-        .priority-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: var(--transition-smooth);
-            font-weight: 700;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-
-        .priority-btn.active {
-            color: #ffffff;
-            background-color: var(--danger-color);
-            box-shadow: 0 2px 6px rgba(224, 90, 71, 0.3);
-        }
-
-        .priority-btn:not(.active):hover {
-            background-color: var(--surface-subtle);
-            color: var(--danger-color);
         }
 
         .item-card.completed {
@@ -942,6 +1111,37 @@
             outline: none;
         }
 
+        .important-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        .important-toggle label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .important-toggle input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-primary);
+        }
+
+        #schedule-reminder-group {
+            display: none;
+        }
+
+        #schedule-reminder-group.visible {
+            display: flex;
+        }
+
         .settings-list {
             display: flex;
             flex-direction: column;
@@ -1080,6 +1280,22 @@
                             <option value="120">2 hours</option>
                             <option value="150">2.5 hours</option>
                             <option value="180">3 hours</option>
+                        </select>
+                    </div>
+                    <div class="important-toggle">
+                        <label for="schedule-important-input">Important event</label>
+                        <input type="checkbox" id="schedule-important-input">
+                    </div>
+                    <div class="form-group" id="schedule-reminder-group">
+                        <label for="schedule-reminder-input">Notify me</label>
+                        <select id="schedule-reminder-input">
+                            <option value="5">5 minutes before</option>
+                            <option value="10">10 minutes before</option>
+                            <option value="15" selected>15 minutes before</option>
+                            <option value="30">30 minutes before</option>
+                            <option value="60">1 hour before</option>
+                            <option value="120">2 hours before</option>
+                            <option value="1440">1 day before</option>
                         </select>
                     </div>
                     <button class="stock-up-btn" style="width:100%; margin-top: 10px;" onclick="submitScheduleEvent()">Add to Calendar</button>
@@ -1233,6 +1449,13 @@
         let currentTheme = localStorage.getItem('timetoshop_theme') || 'light';
         let leftHandMode = localStorage.getItem('timetoshop_lefthand_enabled') === 'true';
         let selectedEventId = null;
+        let notifiedScheduleEvents = JSON.parse(localStorage.getItem('timetoshop_notified_schedule_events')) || {};
+        let scheduleView = localStorage.getItem('timetoshop_schedule_view') || 'overview';
+        let scheduleDay = localStorage.getItem('timetoshop_schedule_day') || 'Mon';
+
+        shoppingList = shoppingList.map(({ priority, ...item }) => item);
+        planList = planList.map(({ priority, ...item }) => item);
+        stockList = stockList.map(({ priority, ...item }) => item);
 
         document.body.setAttribute('data-theme', currentTheme);
         if (leftHandMode) document.body.classList.add('left-handed');
@@ -1412,6 +1635,7 @@
             localStorage.setItem('timetoschedule_schedule_list', JSON.stringify(scheduleList));
             localStorage.setItem('timetoschedule_categories', JSON.stringify(categoriesList));
             localStorage.setItem('timetoshop_item_database', JSON.stringify(itemDatabase));
+            localStorage.setItem('timetoshop_notified_schedule_events', JSON.stringify(notifiedScheduleEvents));
         }
 
         function switchFeature(feature) {
@@ -1467,11 +1691,18 @@
         function toggleScheduleModal(show) {
             if (show) {
                 populateCategoryDropdown();
+                updateReminderVisibility();
                 scheduleModal.classList.add('active');
                 playSound('tap');
             } else {
                 scheduleModal.classList.remove('active');
             }
+        }
+
+        function updateReminderVisibility() {
+            const importantInput = document.getElementById('schedule-important-input');
+            const reminderGroup = document.getElementById('schedule-reminder-group');
+            if (importantInput && reminderGroup) reminderGroup.classList.toggle('visible', importantInput.checked);
         }
 
         function toggleCategoriesModal(show) {
@@ -1572,21 +1803,74 @@
             const day = document.getElementById('schedule-day-input').value;
             const startTime = document.getElementById('schedule-start-input').value;
             const duration = parseInt(document.getElementById('schedule-duration-input').value, 10);
+            const important = document.getElementById('schedule-important-input').checked;
+            const reminderMinutes = parseInt(document.getElementById('schedule-reminder-input').value, 10);
 
-            scheduleList.push({
+            if (important && 'Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            const newEvent = {
                 id: 'sched_' + Date.now(),
                 name,
                 category,
                 day,
                 startTime,
-                duration
-            });
+                duration,
+                important,
+                reminderMinutes: important ? reminderMinutes : null
+            };
+            scheduleList.push(newEvent);
 
             playSound('add');
             saveState();
             toggleScheduleModal(false);
             nameInput.value = '';
+            document.getElementById('schedule-important-input').checked = false;
+            updateReminderVisibility();
             render();
+            scheduleNativeNotification(newEvent);
+        }
+
+        function getNextEventTime(event) {
+            const dayIndexes = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+            const [hours, minutes] = event.startTime.split(':').map(Number);
+            const now = new Date();
+            const eventDate = new Date(now);
+            eventDate.setHours(hours, minutes, 0, 0);
+            eventDate.setDate(eventDate.getDate() + ((dayIndexes[event.day] - now.getDay() + 7) % 7));
+            if (eventDate <= now) eventDate.setDate(eventDate.getDate() + 7);
+            return eventDate;
+        }
+
+        function scheduleNativeNotification(event) {
+            if (!event || !event.important || !event.reminderMinutes) return;
+            const notifyAt = getNextEventTime(event).getTime() - event.reminderMinutes * 60000;
+            if (window.TimeToShop && typeof window.TimeToShop.scheduleNotification === 'function') {
+                window.TimeToShop.scheduleNotification(JSON.stringify({
+                    id: event.id,
+                    title: event.name,
+                    body: `${event.name} is due in ${event.reminderMinutes} minutes`,
+                    at: notifyAt
+                }));
+            }
+        }
+
+        function checkScheduleNotifications() {
+            const now = Date.now();
+            scheduleList.forEach(event => {
+                if (!event.important || !event.reminderMinutes) return;
+                const eventTime = getNextEventTime(event).getTime();
+                const notifyAt = eventTime - event.reminderMinutes * 60000;
+                const notificationKey = `${event.id}:${eventTime}`;
+                if (now >= notifyAt && now < eventTime && !notifiedScheduleEvents[notificationKey]) {
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        new Notification(event.name, { body: `${event.name} is due in ${event.reminderMinutes} minutes` });
+                    }
+                    notifiedScheduleEvents[notificationKey] = true;
+                    saveState();
+                }
+            });
         }
 
         function capitalize(str) {
@@ -1594,7 +1878,7 @@
             return str.trim().charAt(0).toUpperCase() + str.trim().slice(1);
         }
 
-        function addItem(name, quantity = 100, unit = 'Grams', completed = false, priority = false) {
+        function addItem(name, quantity = 100, unit = 'Grams', completed = false) {
             const formattedName = capitalize(name);
             if (!formattedName) return;
             const newItem = {
@@ -1602,8 +1886,7 @@
                 name: formattedName,
                 quantity,
                 unit,
-                completed,
-                priority
+                completed
             };
 
             if (currentFeature === 'shop') {
@@ -1633,17 +1916,6 @@
             const item = list.find(i => i.id === id);
             if (item) {
                 item.completed = !item.completed;
-                playSound('tap');
-                saveState();
-                render();
-            }
-        }
-
-        function togglePriority(id) {
-            const list = currentFeature === 'shop' ? shoppingList : (currentFeature === 'plan' ? planList : stockList);
-            const item = list.find(i => i.id === id);
-            if (item) {
-                item.priority = !item.priority;
                 playSound('tap');
                 saveState();
                 render();
@@ -1683,70 +1955,151 @@
             switchFeature('stock');
         }
 
-        function render() {
-            if (currentFeature === 'schedule') {
-                itemCounterSub.textContent = `${scheduleList.length} scheduled event${scheduleList.length === 1 ? '' : 's'}`;
-                
-                let timeRowsHTML = '';
-                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const scheduleDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const scheduleDayNames = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday' };
+        const scheduleDayShortNames = { Mon: 'Mon', Tue: 'Tue', Wed: 'Wed', Thu: 'Thu', Fri: 'Fri', Sat: 'Sat', Sun: 'Sun' };
 
-                for (let h = 7; h <= 23; h++) {
-                    for (let m = 0; m < 60; m += 30) {
-                        const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-                        
-                        let cellsHTML = '';
-                        days.forEach(day => {
-                            const event = scheduleList.find(c => c.day === day && c.startTime === timeStr);
-                            let eventBlock = '';
-                            if (event) {
-                                const rowSpan = event.duration / 30;
-                                const heightPx = rowSpan * 36 - 4;
-                                const catObj = categoriesList.find(c => c.id === event.category);
-                                const bgColor = catObj ? catObj.color : '#7c3aed';
-                                
-                                eventBlock = `
-                                    <div class="calendar-event-block" style="height: ${heightPx}px; background: ${bgColor};" onclick="event.stopPropagation(); toggleEventDetailsModal(true, '${event.id}')">
-                                        <div class="event-title">${event.name}</div>
-                                        <div style="font-size:0.6rem; opacity:0.9; margin-top:auto;">${event.startTime} (${event.duration}m)</div>
-                                    </div>
-                                `;
-                            }
-                            cellsHTML += `<div class="calendar-slot-cell" onclick="toggleScheduleModal(true); document.getElementById('schedule-day-input').value='${day}'; document.getElementById('schedule-start-input').value='${timeStr}';">${eventBlock}</div>`;
-                        });
+        function setScheduleView(view) {
+            scheduleView = view;
+            localStorage.setItem('timetoshop_schedule_view', scheduleView);
+            playSound('tap');
+            render();
+        }
 
-                        timeRowsHTML += `
-                            <div class="calendar-time-row">
-                                <div class="calendar-time-label">${timeStr}</div>
-                                ${cellsHTML}
+        function setScheduleDay(day) {
+            scheduleDay = day;
+            localStorage.setItem('timetoshop_schedule_day', scheduleDay);
+            render();
+        }
+
+        function openScheduleDay(day) {
+            scheduleDay = day;
+            scheduleView = 'day';
+            localStorage.setItem('timetoshop_schedule_day', scheduleDay);
+            localStorage.setItem('timetoshop_schedule_view', scheduleView);
+            playSound('tap');
+            render();
+        }
+
+        function openScheduleSlot(day, time) {
+            scheduleDay = day;
+            scheduleView = 'day';
+            localStorage.setItem('timetoshop_schedule_day', scheduleDay);
+            localStorage.setItem('timetoshop_schedule_view', scheduleView);
+            toggleScheduleModal(true);
+            document.getElementById('schedule-day-input').value = day;
+            document.getElementById('schedule-start-input').value = time;
+            render();
+        }
+
+        function getScheduleCategoryColor(event) {
+            const category = categoriesList.find(item => item.id === event.category);
+            return category ? category.color : '#7c3aed';
+        }
+
+        function getScheduleStartMinutes(event) {
+            const [hours, minutes] = event.startTime.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        function renderScheduleToolbar() {
+            const viewButton = (view, label) => `<button class="${scheduleView === view ? 'active' : ''}" onclick="setScheduleView('${view}')">${label}</button>`;
+            const dayButtons = scheduleView === 'day' ? `
+                <div class="schedule-day-tabs" aria-label="Choose day">
+                    ${scheduleDays.map(day => `<button class="${scheduleDay === day ? 'active' : ''}" onclick="setScheduleDay('${day}')">${day}</button>`).join('')}
+                </div>
+            ` : '';
+
+            return `
+                <div class="schedule-toolbar">
+                    <div class="schedule-toolbar-row">
+                        <div class="schedule-view-toggle" aria-label="Schedule view">
+                            ${viewButton('overview', 'Overview')}
+                            ${viewButton('day', 'Day view')}
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button onclick="toggleCategoriesModal(true)" style="background:var(--surface-subtle); border:1px solid var(--border-color); color:var(--text-primary); padding:8px 12px; border-radius:12px; font-weight:600; cursor:pointer; font-size:0.78rem;">Categories</button>
+                            <button onclick="toggleScheduleModal(true)" style="background:var(--accent-primary); color:white; border:none; padding:8px 14px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.8rem;">+ Add</button>
+                        </div>
+                    </div>
+                    ${dayButtons}
+                </div>
+            `;
+        }
+
+        function renderScheduleOverview() {
+            const startOfDay = 7 * 60;
+            const minutesInView = 17 * 60;
+            const timeLabels = Array.from({ length: 17 }, (_, index) => {
+                const hour = index + 7;
+                return `<div class="overview-time-label">${String(hour).padStart(2, '0')}:00</div>`;
+            }).join('');
+            const columns = scheduleDays.map(day => {
+                const events = scheduleList.filter(event => event.day === day).map(event => {
+                    const top = Math.max(0, (getScheduleStartMinutes(event) - startOfDay) / minutesInView * 100);
+                    const height = Math.max(0.8, event.duration / minutesInView * 100);
+                    return `<div class="overview-event ${event.important ? 'important' : ''}" style="top:${top}%; height:${height}%; background:${getScheduleCategoryColor(event)};" title="${event.name}" onclick="event.stopPropagation(); toggleEventDetailsModal(true, '${event.id}')"></div>`;
+                }).join('');
+                return `<div class="overview-day-column" onclick="openScheduleDay('${day}')">${events}</div>`;
+            }).join('');
+
+            const legend = categoriesList.map(category => `
+                <span class="overview-legend-item"><span class="overview-legend-swatch" style="background:${category.color};"></span>${category.name}</span>
+            `).join('');
+
+            return `
+                <div class="overview-day-labels">
+                    <div></div>
+                    ${scheduleDays.map(day => `<div class="overview-day-label" title="${scheduleDayNames[day]}">${scheduleDayShortNames[day]}</div>`).join('')}
+                </div>
+                <div class="schedule-overview">
+                    <div class="overview-time-axis">${timeLabels}</div>
+                    ${columns}
+                </div>
+                <div class="overview-legend">${legend}</div>
+            `;
+        }
+
+        function renderScheduleDay() {
+            let timeRowsHTML = '';
+            for (let hour = 7; hour <= 23; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+                    const event = scheduleList.find(item => item.day === scheduleDay && item.startTime === time);
+                    let eventBlock = '';
+                    if (event) {
+                        const heightPx = Math.max(28, event.duration / 30 * 36 - 4);
+                        eventBlock = `
+                            <div class="calendar-event-block" style="height:${heightPx}px; background:${getScheduleCategoryColor(event)};" onclick="event.stopPropagation(); toggleEventDetailsModal(true, '${event.id}')">
+                                ${event.important ? '<span class="event-important-badge" aria-label="Important event">!</span>' : ''}
+                                <div class="event-title">${event.name}</div>
                             </div>
                         `;
                     }
+                    timeRowsHTML += `
+                        <div class="calendar-time-row">
+                            <div class="calendar-time-label">${time}</div>
+                            <div class="calendar-slot-cell" onclick="openScheduleSlot('${scheduleDay}', '${time}')">${eventBlock}</div>
+                        </div>
+                    `;
                 }
+            }
 
-                shoppingListContainer.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; flex-shrink: 0;">
-                        <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Tap slot to add event</span>
-                        <div style="display:flex; gap:6px;">
-                            <button onclick="toggleCategoriesModal(true)" style="background:var(--surface-subtle); border:1px solid var(--border-color); color:var(--text-primary); padding:8px 12px; border-radius:12px; font-weight:600; cursor:pointer; font-size:0.78rem;">Categories</button>
-                            <button onclick="toggleScheduleModal(true)" style="background:var(--accent-primary); color:white; border:none; padding:8px 14px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.8rem;">+ Add Event</button>
-                        </div>
+            return `
+                <div class="day-calendar-container">
+                    <div class="calendar-header-row" style="grid-template-columns:50px 1fr;">
+                        <div class="calendar-header-cell">Time</div>
+                        <div class="calendar-header-cell">${scheduleDayNames[scheduleDay]}</div>
                     </div>
-                    <div class="calendar-container">
-                        <div class="calendar-header-row">
-                            <div class="calendar-header-cell">Time</div>
-                            <div class="calendar-header-cell">Mon</div>
-                            <div class="calendar-header-cell">Tue</div>
-                            <div class="calendar-header-cell">Wed</div>
-                            <div class="calendar-header-cell">Thu</div>
-                            <div class="calendar-header-cell">Fri</div>
-                            <div class="calendar-header-cell">Sat</div>
-                            <div class="calendar-header-cell">Sun</div>
-                        </div>
-                        <div class="calendar-body">
-                            ${timeRowsHTML}
-                        </div>
-                    </div>
-                `;
+                    <div class="day-calendar-body">${timeRowsHTML}</div>
+                </div>
+            `;
+        }
+
+        function render() {
+            if (currentFeature === 'schedule') {
+                itemCounterSub.textContent = `${scheduleList.length} scheduled event${scheduleList.length === 1 ? '' : 's'}`;
+                shoppingListContainer.innerHTML = `${renderScheduleToolbar()}${scheduleView === 'overview' ? renderScheduleOverview() : renderScheduleDay()}`;
                 return;
             }
 
@@ -1760,13 +2113,12 @@
                 `;
             } else {
                 shoppingListContainer.innerHTML = currentList.map(item => `
-                    <div class="item-card ${currentFeature === 'plan' ? 'plan-card' : ''} ${item.completed ? 'completed' : ''} ${item.priority ? 'is-priority' : ''}" id="${item.id}">
+                    <div class="item-card ${currentFeature === 'plan' ? 'plan-card' : ''} ${item.completed ? 'completed' : ''}" id="${item.id}">
                         <div class="item-left">
                             <label class="checkbox-container">
                                 <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleComplete('${item.id}')">
                                 <span class="checkmark"></span>
                             </label>
-                            <button class="priority-btn ${item.priority ? 'active' : ''}" onclick="togglePriority('${item.id}')" title="Toggle Priority">!</button>
                         </div>
                         <div class="item-center">
                             <span class="item-name">${item.name}</span>
@@ -1808,17 +2160,34 @@
             }
         });
 
-        openDbBtn.addEventListener('click', () => {
-            dbModal.classList.add('active');
+        function deleteSavedItem(itemName) {
+            itemDatabase = itemDatabase.filter(savedItem => savedItem !== itemName);
+            playSound('delete');
+            saveState();
+            renderDatabaseList();
+        }
+
+        function renderDatabaseList() {
             databaseListContainer.innerHTML = itemDatabase.map(dbItem => `
                 <div class="database-item">
                     <span class="database-item-name" onclick="addItem('${dbItem}'); dbModal.classList.remove('active');">${dbItem}</span>
                     <button class="database-item-add" onclick="addItem('${dbItem}'); dbModal.classList.remove('active');">Add</button>
+                    <button class="database-item-add" style="color:var(--danger-color); background:rgba(224,90,71,0.1);" onclick="deleteSavedItem('${dbItem}')">Delete</button>
                 </div>
             `).join('') || '<div class="db-empty">No saved items.</div>';
+        }
+
+        openDbBtn.addEventListener('click', () => {
+            dbModal.classList.add('active');
+            renderDatabaseList();
         });
 
         document.getElementById('close-db-btn').addEventListener('click', () => dbModal.classList.remove('active'));
+
+        document.getElementById('schedule-important-input').addEventListener('change', updateReminderVisibility);
+        setInterval(checkScheduleNotifications, 30000);
+        scheduleList.forEach(scheduleNativeNotification);
+        checkScheduleNotifications();
 
         function toggleSettingsModal(show) {
             settingsModal.classList.toggle('active', show);
